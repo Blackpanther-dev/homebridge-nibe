@@ -44,6 +44,33 @@ export interface Subscriptions {
     ]
 }
 
+export type AlarmStatusType = 'None' | 'Active' | 'DismissedByDevice' | 'ResetByUserOnDevice' | 'ResetByUserFromCloud' | 'Unknown';
+
+export interface AlarmStatus {
+    status: AlarmStatusType;
+    datetime: number;
+}
+
+export interface Alarm {
+    id: string;
+    alarmNumber: number;
+    deviceId?: string | null;
+    severity: number;
+    status: AlarmStatusType;
+    createdDatetime?: string | null;
+    statusHistory?: AlarmStatus[] | null;
+    header?: string | null;
+    description?: string | null;
+    equipName?: string | null;
+}
+
+export interface AlarmsPaged {
+    page: number;
+    itemsPerPage: number;
+    numItems: number;
+    notifications?: Alarm[] | null;
+}
+
 export interface Product {
     name: string;
     serialNumber: string;
@@ -65,4 +92,3 @@ export interface Parameter {
         }
     ],
 }
-

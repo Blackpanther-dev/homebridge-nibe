@@ -94,6 +94,11 @@ export class MyUplinkApiFetcher extends EventEmitter implements DataFetcher {
 
       for (const system of this.systems) {
         const subscriptions = await this.fetchPremiumSubscriptions(system.systemId);
+        try {
+          await this.getActiveNotifications(system.systemId);
+        } catch (error) {
+          this.log.error('Error fetching active notifications:', error);
+        }
 
         for (const device of system.devices) {
           const deviceInfo = await this.fetchDeviceInfo(device.id);
@@ -190,6 +195,26 @@ export class MyUplinkApiFetcher extends EventEmitter implements DataFetcher {
       .map(s => s.type);
   }
 
+  public async getActiveNotifications(systemId: string): Promise<api.AlarmsPaged> {
+    this.log.debug('Fetch active notifications.');
+    const response = await this.getFromMyUplink<api.AlarmsPaged>(
+      `/v2/systems/${systemId}/notifications/active`, {
+        itemsPerPage: 100,
+      }, {
+        'Accept-Language': this.options.language || 'en-US',
+      },
+    );
+
+    const notifications = response.notifications || [];
+    this.log.debug(`${notifications.length} active notifications fetched.`);
+
+    notifications
+      .filter(n => n.alarmNumber === 229)
+      .forEach(n => this.log.info('Nibe active alarm 229 notification: ' + JSON.stringify(n)));
+
+    return response;
+  }
+
   private async fetchData(device: api.Device): Promise<api.Parameter[]> {
     this.log.debug('Fetch units.');
     const response = await this.getFromMyUplink<api.Parameter[]>(
@@ -225,12 +250,13 @@ export class MyUplinkApiFetcher extends EventEmitter implements DataFetcher {
     };
   }
 
-  private async getFromMyUplink<T>(url: string, params: object = {}): Promise<T> {
+  private async getFromMyUplink<T>(url: string, params: object = {}, headers: object = {}): Promise<T> {
     this.log.debug(`GET ${url}, params: ${JSON.stringify(params)}`);
     try {
       const { data } = await axios.get<T>(url, {
         headers: {
           Authorization: 'Bearer ' + this.getSession('access_token'),
+          ...headers,
         },
         params,
       });
