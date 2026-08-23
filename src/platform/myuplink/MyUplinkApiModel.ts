@@ -71,6 +71,11 @@ export interface AlarmsPaged {
     notifications?: Alarm[] | null;
 }
 
+export interface CloudToDeviceMethodResult {
+    status?: number;
+    payload?: unknown;
+}
+
 export interface Product {
     name: string;
     serialNumber: string;

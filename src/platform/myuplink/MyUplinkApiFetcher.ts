@@ -26,6 +26,8 @@ const consts = {
   timeout: 45000,
   userAgent: 'homebridge-nibe',
   renewBeforeExpiry: 5 * 60 * 1000,
+  alarmResetCooldownMs: 60 * 1000,
+  maxAlarmResetAttempts: 2,
   allowedParameters: [40067,40004,44362,40013,40014,40008,40025,40026,40075,40183,48132,43437],
 };
 
@@ -38,12 +40,14 @@ export class MyUplinkApiFetcher extends EventEmitter implements DataFetcher {
   private auth: Session | null | undefined;
   private cache: Cache = new Cache();
   private currentlySetting: [] = [];
+  private alarmResetState: Map<string, { alarmNumber: number; attempts: number; lastAttemptTime: number }>; 
 
   constructor(options: Options, log: Logger) {
     super();
 
     this.options = options;
     this.log = log;
+    this.alarmResetState = new Map();
 
     axios.defaults.baseURL = consts.baseUrl;
     axios.defaults.headers.common['user-agent'] = consts.userAgent;
@@ -195,8 +199,31 @@ export class MyUplinkApiFetcher extends EventEmitter implements DataFetcher {
       .map(s => s.type);
   }
 
+  public static shouldAttemptAlarmReset(
+    notification: Pick<api.Alarm, 'id' | 'alarmNumber' | 'status'> | null | undefined,
+    state: Map<string, { alarmNumber: number; attempts: number; lastAttemptTime: number }>,
+  ): boolean {
+    if (notification == null || notification.id == null || notification.id === '') {
+      return false;
+    }
+
+    if (notification.status !== 'Active' || notification.alarmNumber !== 229) {
+      return false;
+    }
+
+    const current = state.get(notification.id) ?? { alarmNumber: notification.alarmNumber, attempts: 0, lastAttemptTime: 0 };
+    if (current.attempts >= consts.maxAlarmResetAttempts) {
+      return false;
+    }
+
+    if (current.lastAttemptTime > 0 && Date.now() - current.lastAttemptTime < consts.alarmResetCooldownMs) {
+      return false;
+    }
+
+    return true;
+  }
+
   public async getActiveNotifications(systemId: string): Promise<api.AlarmsPaged> {
-    this.log.debug('Fetch active notifications.');
     const response = await this.getFromMyUplink<api.AlarmsPaged>(
       `/v2/systems/${systemId}/notifications/active`, {
         itemsPerPage: 100,
@@ -206,13 +233,97 @@ export class MyUplinkApiFetcher extends EventEmitter implements DataFetcher {
     );
 
     const notifications = response.notifications || [];
-    this.log.debug(`${notifications.length} active notifications fetched.`);
+    this.log.debug(`Fetch active notifications. ${notifications.length} active notifications fetched.`);
 
-    notifications
-      .filter(n => n.alarmNumber === 229)
-      .forEach(n => this.log.info('Nibe active alarm 229 notification: ' + JSON.stringify(n)));
+    await this.processAlarmReset(systemId, notifications);
 
     return response;
+  }
+
+  private async processAlarmReset(systemId: string, notifications: api.Alarm[]): Promise<void> {
+    for (const notification of notifications) {
+      if (!MyUplinkApiFetcher.shouldAttemptAlarmReset(notification, this.alarmResetState)) {
+        continue;
+      }
+
+      if (notification.id == null || notification.id === '' || notification.deviceId == null || notification.deviceId === '') {
+        continue;
+      }
+
+      this.log.info(`Nibe active alarm 229 detected: ${notification.header || 'Short operating times for compr.'}`);
+      this.log.info(`Nibe alarm 229 notification ID: ${notification.id}`);
+
+      const current = this.alarmResetState.get(notification.id) ?? { alarmNumber: notification.alarmNumber, attempts: 0, lastAttemptTime: 0 };
+      current.alarmNumber = notification.alarmNumber;
+      current.attempts += 1;
+      current.lastAttemptTime = Date.now();
+      this.alarmResetState.set(notification.id, current);
+
+      try {
+        this.log.info('Attempting automatic reset of Nibe alarm 229.');
+        await this.resetNotification(systemId, notification.deviceId, notification.id);
+        this.log.info('Nibe alarm 229 reset request succeeded.');
+
+        const refreshed = await this.getFromMyUplink<api.AlarmsPaged>(
+          `/v2/systems/${systemId}/notifications/active`, {
+            itemsPerPage: 100,
+          }, {
+            'Accept-Language': this.options.language || 'en-US',
+          },
+        );
+
+        const refreshedNotification = (refreshed.notifications || []).find(
+          n => n.id === notification.id && n.alarmNumber === 229 && n.status === 'Active',
+        );
+
+        if (refreshedNotification == null) {
+          this.alarmResetState.delete(notification.id);
+          this.log.info('Nibe alarm 229 reset confirmed.');
+          continue;
+        }
+
+        if (current.attempts >= consts.maxAlarmResetAttempts) {
+          this.log.info('Nibe alarm 229 reset retry limit reached.');
+          this.log.info('Nibe alarm 229 cannot be reset because the API rejected further attempts.');
+          continue;
+        }
+
+        this.log.info('Nibe alarm 229 remains active after reset attempt.');
+      } catch (error) {
+        const reason = error instanceof Error ? error.message : String(error);
+        this.log.info(`Nibe alarm 229 reset attempt failed: ${reason}`);
+
+        const latest = this.alarmResetState.get(notification.id);
+        if (latest && latest.attempts >= consts.maxAlarmResetAttempts) {
+          this.log.info('Nibe alarm 229 cannot be reset because the API rejected further attempts.');
+        }
+      }
+    }
+  }
+
+  public async resetNotification(systemId: string, deviceId: string, notificationId: string): Promise<api.CloudToDeviceMethodResult> {
+    const url = `/v2/devices/${deviceId}/notifications/${notificationId}/reset`;
+    return await this.postToMyUplink<api.CloudToDeviceMethodResult>(url, {});
+  }
+
+  private async postToMyUplink<T>(url: string, body: object = {}, headers: object = {}): Promise<T> {
+    this.log.debug(`POST ${url}, body: ${JSON.stringify(body)}`);
+    try {
+      const { data } = await axios.post<T>(url, body, {
+        headers: {
+          Authorization: 'Bearer ' + this.getSession('access_token'),
+          ...headers,
+        },
+      });
+
+      if (this.options.showApiResponse) {
+        this.log.info('Nibe data from ' + url + ': ' + JSON.stringify(data));
+      }
+
+      return data;
+    } catch (error) {
+      throw this.checkError(url, error);
+    }
   }
 
   private async fetchData(device: api.Device): Promise<api.Parameter[]> {
