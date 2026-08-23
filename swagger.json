@@ -1,0 +1,4020 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "myUplink PRO Public API",
+    "version": "v2"
+  },
+  "paths": {
+    "/v2/devices/{deviceId}/aid-mode/{mode}": {
+      "post": {
+        "tags": [
+          "AidMode"
+        ],
+        "summary": "Turn aid mode on and off.",
+        "parameters": [
+          {
+            "name": "deviceId",
+            "in": "path",
+            "description": "The id of the device.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "mode",
+            "in": "path",
+            "description": "Aid mode.",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/AidMode"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CloudToDeviceMethodResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CloudToDeviceMethodResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CloudToDeviceMethodResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Device not found."
+          },
+          "409": {
+            "description": "Device is disconnected."
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "authorized-groups": 
+      }
+    },
+    "/v2/devices/{deviceId}/aid-mode": {
+      "get": {
+        "tags": [
+          "AidMode"
+        ],
+        "summary": "Get aid mode state.",
+        "parameters": [
+          {
+            "name": "deviceId",
+            "in": "path",
+            "description": "The id of the device.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AidModeResponseModel"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AidModeResponseModel"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AidModeResponseModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "authorized-groups": 
+      }
+    },
+    "/v2/devices/{deviceId}": {
+      "get": {
+        "tags": [
+          "DeviceInfo"
+        ],
+        "summary": "Device querying endpoint.",
+        "parameters": [
+          {
+            "name": "deviceId",
+            "in": "path",
+            "description": "The id of the device.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeviceResponseModel"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeviceResponseModel"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeviceResponseModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "authorized-groups": 
+      }
+    },
+    "/v2/devices/{deviceId}/smart-home-categories": {
+      "get": {
+        "tags": [
+          "DeviceInfo"
+        ],
+        "summary": "Gets the availability of smart home categories in a device.",
+        "parameters": [
+          {
+            "name": "deviceId",
+            "in": "path",
+            "description": "The id of the device.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "sh-energyMetered": {
+                      "type": "boolean"
+                    },
+                    "sh-hwBoost": {
+                      "type": "boolean"
+                    },
+                    "sh-hwTemp": {
+                      "type": "boolean"
+                    },
+                    "sh-indoorCO2": {
+                      "type": "boolean"
+                    },
+                    "sh-indoorHumidity": {
+                      "type": "boolean"
+                    },
+                    "sh-indoorSpHeat": {
+                      "type": "boolean"
+                    },
+                    "sh-indoorSpCool": {
+                      "type": "boolean"
+                    },
+                    "sh-indoorSpOffsHeat": {
+                      "type": "boolean"
+                    },
+                    "sh-indoorSpOffsCool": {
+                      "type": "boolean"
+                    },
+                    "sh-indoorTemp": {
+                      "type": "boolean"
+                    },
+                    "sh-outdoorTemp": {
+                      "type": "boolean"
+                    },
+                    "sh-poolTemp": {
+                      "type": "boolean"
+                    },
+                    "sh-returnTemp": {
+                      "type": "boolean"
+                    },
+                    "sh-smartMode": {
+                      "type": "boolean"
+                    },
+                    "sh-solarEnergyProducedDay": {
+                      "type": "boolean"
+                    },
+                    "sh-solarEnergyProducedWeek": {
+                      "type": "boolean"
+                    },
+                    "sh-solarEnergyProducedMonth": {
+                      "type": "boolean"
+                    },
+                    "sh-solarEnergyProducedYear": {
+                      "type": "boolean"
+                    },
+                    "sh-solarEnergyProducedTotal": {
+                      "type": "boolean"
+                    },
+                    "sh-supplyTemp": {
+                      "type": "boolean"
+                    },
+                    "sh-ventBoost": {
+                      "type": "boolean"
+                    },
+                    "sh-ventMode": {
+                      "type": "boolean"
+                    },
+                    "sh-zones": {
+                      "type": "boolean"
+                    },
+                    "sh-zoneMode": {
+                      "type": "boolean"
+                    },
+                    "sh-electricPowerUsedCurrently": {
+                      "type": "boolean"
+                    },
+                    "sh-hwMode": {
+                      "type": "boolean"
+                    },
+                    "sh-indoorCO2Sp": {
+                      "type": "boolean"
+                    },
+                    "sh-indoorHumiditySp": {
+                      "type": "boolean"
+                    },
+                    "sh-poolSp": {
+                      "type": "boolean"
+                    },
+                    "sh-solarPowerAvailableCurrently": {
+                      "type": "boolean"
+                    },
+                    "sh-electricalPriceMode": {
+                      "type": "boolean"
+                    },
+                    "sh-electricalPriceModeDuration": {
+                      "type": "boolean"
+                    },
+                    "sh-indoorHumidityMode": {
+                      "type": "boolean"
+                    },
+                    "sh-indoorDeHumiditySp": {
+                      "type": "boolean"
+                    },
+                    "sh-fanMode": {
+                      "type": "boolean"
+                    },
+                    "sh-fanStatus": {
+                      "type": "boolean"
+                    },
+                    "sh-energyStateOfCharge": {
+                      "type": "boolean"
+                    },
+                    "sh-energyMeteredDay": {
+                      "type": "boolean"
+                    },
+                    "sh-energyMeteredWeek": {
+                      "type": "boolean"
+                    },
+                    "sh-energyMeteredMonth": {
+                      "type": "boolean"
+                    },
+                    "sh-energyMeteredYear": {
+                      "type": "boolean"
+                    },
+                    "sh-electricalPriceNextLow": {
+                      "type": "boolean"
+                    },
+                    "sh-electricalPriceNextHigh": {
+                      "type": "boolean"
+                    },
+                    "sh-heatMode": {
+                      "type": "boolean"
+                    },
+                    "sh-heatBoost": {
+                      "type": "boolean"
+                    },
+                    "sh-indoorTempOverride": {
+                      "type": "boolean"
+                    },
+                    "sh-indoorSpHeatOverride": {
+                      "type": "boolean"
+                    },
+                    "sh-indoorSpCoolOverride": {
+                      "type": "boolean"
+                    },
+                    "sh-powerControlMode": {
+                      "type": "boolean"
+                    },
+                    "sh-powerControlUsage": {
+                      "type": "boolean"
+                    },
+                    "sh-powerControlAvailMin": {
+                      "type": "boolean"
+                    },
+                    "sh-powerControlAvailMax": {
+                      "type": "boolean"
+                    },
+                    "sh-coolBlock": {
+                      "type": "boolean"
+                    },
+                    "sh-poolBlock": {
+                      "type": "boolean"
+                    },
+                    "sh-hwSpOffs": {
+                      "type": "boolean"
+                    },
+                    "sh-powerControlLimitation": {
+                      "type": "boolean"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "sh-energyMetered": {
+                      "type": "boolean"
+                    },
+                    "sh-hwBoost": {
+                      "type": "boolean"
+                    },
+                    "sh-hwTemp": {
+                      "type": "boolean"
+                    },
+                    "sh-indoorCO2": {
+                      "type": "boolean"
+                    },
+                    "sh-indoorHumidity": {
+                      "type": "boolean"
+                    },
+                    "sh-indoorSpHeat": {
+                      "type": "boolean"
+                    },
+                    "sh-indoorSpCool": {
+                      "type": "boolean"
+                    },
+                    "sh-indoorSpOffsHeat": {
+                      "type": "boolean"
+                    },
+                    "sh-indoorSpOffsCool": {
+                      "type": "boolean"
+                    },
+                    "sh-indoorTemp": {
+                      "type": "boolean"
+                    },
+                    "sh-outdoorTemp": {
+                      "type": "boolean"
+                    },
+                    "sh-poolTemp": {
+                      "type": "boolean"
+                    },
+                    "sh-returnTemp": {
+                      "type": "boolean"
+                    },
+                    "sh-smartMode": {
+                      "type": "boolean"
+                    },
+                    "sh-solarEnergyProducedDay": {
+                      "type": "boolean"
+                    },
+                    "sh-solarEnergyProducedWeek": {
+                      "type": "boolean"
+                    },
+                    "sh-solarEnergyProducedMonth": {
+                      "type": "boolean"
+                    },
+                    "sh-solarEnergyProducedYear": {
+                      "type": "boolean"
+                    },
+                    "sh-solarEnergyProducedTotal": {
+                      "type": "boolean"
+                    },
+                    "sh-supplyTemp": {
+                      "type": "boolean"
+                    },
+                    "sh-ventBoost": {
+                      "type": "boolean"
+                    },
+                    "sh-ventMode": {
+                      "type": "boolean"
+                    },
+                    "sh-zones": {
+                      "type": "boolean"
+                    },
+                    "sh-zoneMode": {
+                      "type": "boolean"
+                    },
+                    "sh-electricPowerUsedCurrently": {
+                      "type": "boolean"
+                    },
+                    "sh-hwMode": {
+                      "type": "boolean"
+                    },
+                    "sh-indoorCO2Sp": {
+                      "type": "boolean"
+                    },
+                    "sh-indoorHumiditySp": {
+                      "type": "boolean"
+                    },
+                    "sh-poolSp": {
+                      "type": "boolean"
+                    },
+                    "sh-solarPowerAvailableCurrently": {
+                      "type": "boolean"
+                    },
+                    "sh-electricalPriceMode": {
+                      "type": "boolean"
+                    },
+                    "sh-electricalPriceModeDuration": {
+                      "type": "boolean"
+                    },
+                    "sh-indoorHumidityMode": {
+                      "type": "boolean"
+                    },
+                    "sh-indoorDeHumiditySp": {
+                      "type": "boolean"
+                    },
+                    "sh-fanMode": {
+                      "type": "boolean"
+                    },
+                    "sh-fanStatus": {
+                      "type": "boolean"
+                    },
+                    "sh-energyStateOfCharge": {
+                      "type": "boolean"
+                    },
+                    "sh-energyMeteredDay": {
+                      "type": "boolean"
+                    },
+                    "sh-energyMeteredWeek": {
+                      "type": "boolean"
+                    },
+                    "sh-energyMeteredMonth": {
+                      "type": "boolean"
+                    },
+                    "sh-energyMeteredYear": {
+                      "type": "boolean"
+                    },
+                    "sh-electricalPriceNextLow": {
+                      "type": "boolean"
+                    },
+                    "sh-electricalPriceNextHigh": {
+                      "type": "boolean"
+                    },
+                    "sh-heatMode": {
+                      "type": "boolean"
+                    },
+                    "sh-heatBoost": {
+                      "type": "boolean"
+                    },
+                    "sh-indoorTempOverride": {
+                      "type": "boolean"
+                    },
+                    "sh-indoorSpHeatOverride": {
+                      "type": "boolean"
+                    },
+                    "sh-indoorSpCoolOverride": {
+                      "type": "boolean"
+                    },
+                    "sh-powerControlMode": {
+                      "type": "boolean"
+                    },
+                    "sh-powerControlUsage": {
+                      "type": "boolean"
+                    },
+                    "sh-powerControlAvailMin": {
+                      "type": "boolean"
+                    },
+                    "sh-powerControlAvailMax": {
+                      "type": "boolean"
+                    },
+                    "sh-coolBlock": {
+                      "type": "boolean"
+                    },
+                    "sh-poolBlock": {
+                      "type": "boolean"
+                    },
+                    "sh-hwSpOffs": {
+                      "type": "boolean"
+                    },
+                    "sh-powerControlLimitation": {
+                      "type": "boolean"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "sh-energyMetered": {
+                      "type": "boolean"
+                    },
+                    "sh-hwBoost": {
+                      "type": "boolean"
+                    },
+                    "sh-hwTemp": {
+                      "type": "boolean"
+                    },
+                    "sh-indoorCO2": {
+                      "type": "boolean"
+                    },
+                    "sh-indoorHumidity": {
+                      "type": "boolean"
+                    },
+                    "sh-indoorSpHeat": {
+                      "type": "boolean"
+                    },
+                    "sh-indoorSpCool": {
+                      "type": "boolean"
+                    },
+                    "sh-indoorSpOffsHeat": {
+                      "type": "boolean"
+                    },
+                    "sh-indoorSpOffsCool": {
+                      "type": "boolean"
+                    },
+                    "sh-indoorTemp": {
+                      "type": "boolean"
+                    },
+                    "sh-outdoorTemp": {
+                      "type": "boolean"
+                    },
+                    "sh-poolTemp": {
+                      "type": "boolean"
+                    },
+                    "sh-returnTemp": {
+                      "type": "boolean"
+                    },
+                    "sh-smartMode": {
+                      "type": "boolean"
+                    },
+                    "sh-solarEnergyProducedDay": {
+                      "type": "boolean"
+                    },
+                    "sh-solarEnergyProducedWeek": {
+                      "type": "boolean"
+                    },
+                    "sh-solarEnergyProducedMonth": {
+                      "type": "boolean"
+                    },
+                    "sh-solarEnergyProducedYear": {
+                      "type": "boolean"
+                    },
+                    "sh-solarEnergyProducedTotal": {
+                      "type": "boolean"
+                    },
+                    "sh-supplyTemp": {
+                      "type": "boolean"
+                    },
+                    "sh-ventBoost": {
+                      "type": "boolean"
+                    },
+                    "sh-ventMode": {
+                      "type": "boolean"
+                    },
+                    "sh-zones": {
+                      "type": "boolean"
+                    },
+                    "sh-zoneMode": {
+                      "type": "boolean"
+                    },
+                    "sh-electricPowerUsedCurrently": {
+                      "type": "boolean"
+                    },
+                    "sh-hwMode": {
+                      "type": "boolean"
+                    },
+                    "sh-indoorCO2Sp": {
+                      "type": "boolean"
+                    },
+                    "sh-indoorHumiditySp": {
+                      "type": "boolean"
+                    },
+                    "sh-poolSp": {
+                      "type": "boolean"
+                    },
+                    "sh-solarPowerAvailableCurrently": {
+                      "type": "boolean"
+                    },
+                    "sh-electricalPriceMode": {
+                      "type": "boolean"
+                    },
+                    "sh-electricalPriceModeDuration": {
+                      "type": "boolean"
+                    },
+                    "sh-indoorHumidityMode": {
+                      "type": "boolean"
+                    },
+                    "sh-indoorDeHumiditySp": {
+                      "type": "boolean"
+                    },
+                    "sh-fanMode": {
+                      "type": "boolean"
+                    },
+                    "sh-fanStatus": {
+                      "type": "boolean"
+                    },
+                    "sh-energyStateOfCharge": {
+                      "type": "boolean"
+                    },
+                    "sh-energyMeteredDay": {
+                      "type": "boolean"
+                    },
+                    "sh-energyMeteredWeek": {
+                      "type": "boolean"
+                    },
+                    "sh-energyMeteredMonth": {
+                      "type": "boolean"
+                    },
+                    "sh-energyMeteredYear": {
+                      "type": "boolean"
+                    },
+                    "sh-electricalPriceNextLow": {
+                      "type": "boolean"
+                    },
+                    "sh-electricalPriceNextHigh": {
+                      "type": "boolean"
+                    },
+                    "sh-heatMode": {
+                      "type": "boolean"
+                    },
+                    "sh-heatBoost": {
+                      "type": "boolean"
+                    },
+                    "sh-indoorTempOverride": {
+                      "type": "boolean"
+                    },
+                    "sh-indoorSpHeatOverride": {
+                      "type": "boolean"
+                    },
+                    "sh-indoorSpCoolOverride": {
+                      "type": "boolean"
+                    },
+                    "sh-powerControlMode": {
+                      "type": "boolean"
+                    },
+                    "sh-powerControlUsage": {
+                      "type": "boolean"
+                    },
+                    "sh-powerControlAvailMin": {
+                      "type": "boolean"
+                    },
+                    "sh-powerControlAvailMax": {
+                      "type": "boolean"
+                    },
+                    "sh-coolBlock": {
+                      "type": "boolean"
+                    },
+                    "sh-poolBlock": {
+                      "type": "boolean"
+                    },
+                    "sh-hwSpOffs": {
+                      "type": "boolean"
+                    },
+                    "sh-powerControlLimitation": {
+                      "type": "boolean"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "authorized-groups": 
+      }
+    },
+    "/v2/devices/{deviceId}/smart-home-zones": {
+      "get": {
+        "tags": [
+          "DeviceInfo"
+        ],
+        "summary": "Gets the available smart home zones for a device.",
+        "parameters": [
+          {
+            "name": "deviceId",
+            "in": "path",
+            "description": "The id of the device.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language (e.g. en-GB).",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ZoneResponse"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ZoneResponse"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ZoneResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "authorized-groups": 
+      }
+    },
+    "/v2/devices/{deviceId}/categories": {
+      "get": {
+        "tags": [
+          "DeviceInfo"
+        ],
+        "summary": "Returns parameters grouped by categories of specified device.",
+        "parameters": [
+          {
+            "name": "deviceId",
+            "in": "path",
+            "description": "The id of the device.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language (e.g. en-US)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DeviceCategory"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DeviceCategory"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DeviceCategory"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "authorized-groups": 
+      }
+    },
+    "/v2/devices/{deviceId}/categories/{categoryName}": {
+      "get": {
+        "tags": [
+          "DeviceInfo"
+        ],
+        "summary": "Returns parameters grouped by specified category of specified device.",
+        "parameters": [
+          {
+            "name": "deviceId",
+            "in": "path",
+            "description": "The id of the device.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "categoryName",
+            "in": "path",
+            "description": "Category name.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language (e.g. en-US)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DeviceCategory"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DeviceCategory"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DeviceCategory"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "authorized-groups": 
+      }
+    },
+    "/v2/devices/{deviceId}/smart-home-mode": {
+      "get": {
+        "tags": [
+          "DeviceInfo"
+        ],
+        "summary": "Get current smart home mode of a device.",
+        "parameters": [
+          {
+            "name": "deviceId",
+            "in": "path",
+            "description": "The id of the system.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SmartHomeModeModel"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SmartHomeModeModel"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SmartHomeModeModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "authorized-groups": 
+      }
+    },
+    "/v2/devices/{deviceId}/smart-home-mode/{smartMode}": {
+      "put": {
+        "tags": [
+          "DeviceInfo"
+        ],
+        "summary": "Set smart home mode for a device.",
+        "parameters": [
+          {
+            "name": "deviceId",
+            "in": "path",
+            "description": "The id of the device.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "smartMode",
+            "in": "path",
+            "description": "The specified smart mode.",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/SmartMode"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "409": {
+            "description": "Conflict"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "authorized-groups": 
+      }
+    },
+    "/v2/devices/points/get-latest": {
+      "post": {
+        "tags": [
+          "DevicePoints"
+        ],
+        "summary": "Get data points values for devices.",
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language (e.g. en-GB).",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "JPI.Cloud.API.Pro.Public.Areas.DeviceData.InternalServiceModels.BulkDevicePointsRequest.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BulkDevicePointsRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BulkDevicePointsRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/BulkDevicePointsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/ParameterData"
+                    }
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/ParameterData"
+                    }
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/ParameterData"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "authorized-groups": 
+      }
+    },
+    "/v2/devices/historical-points": {
+      "post": {
+        "tags": [
+          "DevicePoints"
+        ],
+        "summary": "Get history points for multiple deviceIds and parameterIds.\r\nThe date range between dateFrom and dateTo must not exceed 48 hours.",
+        "requestBody": {
+          "description": "JPI.Cloud.API.Pro.Public.Areas.DeviceData.Requests.HistoryPointsRequest.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HistoryPointsRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HistoryPointsRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/HistoryPointsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/HistoryPointsResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HistoryPointsResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HistoryPointsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "authorized-groups": 
+      }
+    },
+    "/v2/devices/points": {
+      "patch": {
+        "tags": [
+          "DevicePoints"
+        ],
+        "summary": "Change settings on multiple devices.",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeviceSettingUpdateRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeviceSettingUpdateRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeviceSettingUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "207": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "$ref": "#/components/schemas/DeviceMethodResult"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "$ref": "#/components/schemas/DeviceMethodResult"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "$ref": "#/components/schemas/DeviceMethodResult"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "authorized-groups": 
+      }
+    },
+    "/v2/devices/zones/{zoneId}": {
+      "patch": {
+        "tags": [
+          "DevicePoints"
+        ],
+        "summary": "Updates zone settings on multiple devices.",
+        "parameters": [
+          {
+            "name": "zoneId",
+            "in": "path",
+            "description": "Zone ID.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "JPI.Cloud.API.Pro.Public.Areas.DeviceData.Requests.BulkZonePatchRequest.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BulkZonePatchRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BulkZonePatchRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/BulkZonePatchRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "207": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {"device-id-1":{"SetpointHeat":"SUCCESS","SetpointCool":"ERROR","Mode":"SUCCESS"},"device-id-2":{"SetpointHeat":"SUCCESS","SetpointCool":"ERROR","Mode":"NOT AVAILABLE"}}
+              },
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {"device-id-1":{"SetpointHeat":"SUCCESS","SetpointCool":"ERROR","Mode":"SUCCESS"},"device-id-2":{"SetpointHeat":"SUCCESS","SetpointCool":"ERROR","Mode":"NOT AVAILABLE"}}
+              },
+              "text/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {"device-id-1":{"SetpointHeat":"SUCCESS","SetpointCool":"ERROR","Mode":"SUCCESS"},"device-id-2":{"SetpointHeat":"SUCCESS","SetpointCool":"ERROR","Mode":"NOT AVAILABLE"}}
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {"device-id-1":{"SetpointHeat":"SUCCESS","SetpointCool":"SUCCESS","Mode":"SUCCESS"},"device-id-2":{"SetpointHeat":"SUCCESS","SetpointCool":"SUCCESS","Mode":"SUCCESS"}}
+              },
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {"device-id-1":{"SetpointHeat":"SUCCESS","SetpointCool":"SUCCESS","Mode":"SUCCESS"},"device-id-2":{"SetpointHeat":"SUCCESS","SetpointCool":"SUCCESS","Mode":"SUCCESS"}}
+              },
+              "text/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {"device-id-1":{"SetpointHeat":"SUCCESS","SetpointCool":"SUCCESS","Mode":"SUCCESS"},"device-id-2":{"SetpointHeat":"SUCCESS","SetpointCool":"SUCCESS","Mode":"SUCCESS"}}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {"device-id-1":{"SetpointHeat":"ERROR","SetpointCool":"ERROR","Mode":"ERROR"},"device-id-2":{"SetpointHeat":"ERROR","SetpointCool":"ERROR","Mode":"ERROR"}}
+              },
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {"device-id-1":{"SetpointHeat":"ERROR","SetpointCool":"ERROR","Mode":"ERROR"},"device-id-2":{"SetpointHeat":"ERROR","SetpointCool":"ERROR","Mode":"ERROR"}}
+              },
+              "text/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {"device-id-1":{"SetpointHeat":"ERROR","SetpointCool":"ERROR","Mode":"ERROR"},"device-id-2":{"SetpointHeat":"ERROR","SetpointCool":"ERROR","Mode":"ERROR"}}
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "authorized-groups": 
+      }
+    },
+    "/v2/devices/{deviceId}/points": {
+      "get": {
+        "tags": [
+          "DevicePoints"
+        ],
+        "summary": "Get data points for device.",
+        "parameters": [
+          {
+            "name": "deviceId",
+            "in": "path",
+            "description": "The id of the device.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language (e.g. en-GB).",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          },
+          {
+            "name": "parameters",
+            "in": "query",
+            "description": "Parameter IDs separated by comma. Optional parameter.\r\nIf Parameter IDs are not defined, then all device's parameters will be listed.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ParameterData"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ParameterData"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ParameterData"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "authorized-groups": 
+      },
+      "patch": {
+        "tags": [
+          "DevicePoints"
+        ],
+        "summary": "Change settings on device.",
+        "description": "Sample request - 1:\r\n            \r\n    PATCH /v2/devices/{deviceId}/points\r\n    {\r\n      \"parameterId\" : \"value\",\r\n      \"smartHomeCategory\" : \"value\"\r\n    }\r\n\n\r\nWhere:\r\n* deviceId - ID of the device;\r\n* parameterId - ID of the specific device parameter;\r\n* value - a new value for this parameter;\r\n* smartHomeCategory - smart home category of the device that needs to be updated.\r\n\n\r\nBoth parameter ID and smart home category can be used interchangeably in the request.",
+        "parameters": [
+          {
+            "name": "deviceId",
+            "in": "path",
+            "description": "Device ID.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Data for updating data point. Consist of the dictionary of a parameters with a new values.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              },
+              "example": {"54321":"30","sh-indoorSpHeat":"30","12346":"-10","sh-poolTemp":"18"}
+            },
+            "text/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              },
+              "example": {"54321":"30","sh-indoorSpHeat":"30","12346":"-10","sh-poolTemp":"18"}
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              },
+              "example": {"54321":"30","sh-indoorSpHeat":"30","12346":"-10","sh-poolTemp":"18"}
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                },
+                "example": {"54321":"modified","10001":"modified","12346":"modified","54323":"modified"}
+              },
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                },
+                "example": {"54321":"modified","10001":"modified","12346":"modified","54323":"modified"}
+              },
+              "text/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                },
+                "example": {"54321":"modified","10001":"modified","12346":"modified","54323":"modified"}
+              }
+            }
+          },
+          "207": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "409": {
+            "description": "Conflict"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "authorized-groups": 
+      }
+    },
+    "/v2/devices/{deviceId}/zones/{zoneId}": {
+      "patch": {
+        "tags": [
+          "DevicePoints"
+        ],
+        "summary": "Updates zone settings.",
+        "parameters": [
+          {
+            "name": "deviceId",
+            "in": "path",
+            "description": "Device ID.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "zoneId",
+            "in": "path",
+            "description": "Zone ID.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Object with zone settings to update.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ZonePatchRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ZonePatchRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ZonePatchRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                },
+                "example": {"SetpointHeat":"SUCCESS","SetpointCool":"ERROR","MODE":"SUCCESS"}
+              },
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                },
+                "example": {"SetpointHeat":"SUCCESS","SetpointCool":"ERROR","MODE":"SUCCESS"}
+              },
+              "text/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                },
+                "example": {"SetpointHeat":"SUCCESS","SetpointCool":"ERROR","MODE":"SUCCESS"}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "authorized-groups": 
+      }
+    },
+    "/v2/devices/weekly-schedules": {
+      "patch": {
+        "tags": [
+          "DeviceSchedules"
+        ],
+        "summary": "Set weekly-schedule mode for multiple devices.",
+        "requestBody": {
+          "description": "Object that contains deviceIds and weekly schedule",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WeeklyScheduleForDevices"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WeeklyScheduleForDevices"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/WeeklyScheduleForDevices"
+              }
+            }
+          }
+        },
+        "responses": {
+          "207": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "$ref": "#/components/schemas/DeviceMethodResult"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "$ref": "#/components/schemas/DeviceMethodResult"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "$ref": "#/components/schemas/DeviceMethodResult"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "authorized-groups": 
+      },
+      "get": {
+        "tags": [
+          "DeviceSchedules"
+        ],
+        "summary": "Get weekly-schedule mode for multiple devices.",
+        "parameters": [
+          {
+            "name": "deviceIds",
+            "in": "query",
+            "description": "Device Ids.",
+            "required": true,
+            "schema": {
+              "maxItems": 30,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/WeeklyScheduleVerboseResponse"
+                    }
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/WeeklyScheduleVerboseResponse"
+                    }
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/WeeklyScheduleVerboseResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "authorized-groups": 
+      }
+    },
+    "/v2/devices/{deviceId}/schedule-modes": {
+      "put": {
+        "tags": [
+          "DeviceSchedules"
+        ],
+        "summary": "Sets schedule modes for a device.",
+        "parameters": [
+          {
+            "name": "deviceId",
+            "in": "path",
+            "description": "Device ID.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "List of schedule modes to set.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ScheduleMode"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ScheduleMode"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ScheduleMode"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "409": {
+            "description": "Conflict"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "authorized-groups": 
+      }
+    },
+    "/v2/devices/schedule-modes": {
+      "put": {
+        "tags": [
+          "DeviceSchedules"
+        ],
+        "summary": "Sets schedule modes for multiple devices.",
+        "parameters": [
+          {
+            "name": "deviceIds",
+            "in": "query",
+            "description": "Device Ids.",
+            "required": true,
+            "schema": {
+              "maxItems": 30,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "List of schedule modes to set.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ScheduleMode"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ScheduleMode"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ScheduleMode"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "207": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "$ref": "#/components/schemas/ModeSetResult"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "$ref": "#/components/schemas/ModeSetResult"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "$ref": "#/components/schemas/ModeSetResult"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "authorized-groups": 
+      }
+    },
+    "/v2/devices/{deviceId}/firmware/info": {
+      "get": {
+        "tags": [
+          "Firmware"
+        ],
+        "summary": "Gets brief information about the specified device's firmware.",
+        "parameters": [
+          {
+            "name": "deviceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeviceFirmwareInfoResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeviceFirmwareInfoResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeviceFirmwareInfoResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "authorized-groups": 
+      }
+    },
+    "/v2/groups/me": {
+      "get": {
+        "tags": [
+          "Groups"
+        ],
+        "summary": "Get groups in a hierarchical structure.",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SPGroupsTreeResponse"
+                  }
+                },
+                "example": [{"id":"d205db12-b668-4819-88f5-1b764806f2e6","name":"parent-group","childGroups":[{"id":"65f4840f-b267-43dd-afff-156f3f4ca47a","name":"child-group-1","childGroups":[]},{"id":"7c2414db-8bd2-498f-9e6b-b35ed1883649","name":"child-group-2","childGroups":[]}]}]
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SPGroupsTreeResponse"
+                  }
+                },
+                "example": [{"id":"d205db12-b668-4819-88f5-1b764806f2e6","name":"parent-group","childGroups":[{"id":"65f4840f-b267-43dd-afff-156f3f4ca47a","name":"child-group-1","childGroups":[]},{"id":"7c2414db-8bd2-498f-9e6b-b35ed1883649","name":"child-group-2","childGroups":[]}]}]
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SPGroupsTreeResponse"
+                  }
+                },
+                "example": [{"id":"d205db12-b668-4819-88f5-1b764806f2e6","name":"parent-group","childGroups":[{"id":"65f4840f-b267-43dd-afff-156f3f4ca47a","name":"child-group-1","childGroups":[]},{"id":"7c2414db-8bd2-498f-9e6b-b35ed1883649","name":"child-group-2","childGroups":[]}]}]
+              }
+            }
+          }
+        },
+        "authorized-groups": 
+      }
+    },
+    "/v2/groups/{groupId}/devices": {
+      "get": {
+        "tags": [
+          "Groups"
+        ],
+        "summary": "Get paginated list of devices belonging to a group and their info.",
+        "parameters": [
+          {
+            "name": "groupId",
+            "in": "path",
+            "description": "Group idenitifier.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number. Cannot be less than 1.",
+            "schema": {
+              "maximum": 2147483647,
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "Page size. Cannot be less than 1 or greater than 25.",
+            "schema": {
+              "maximum": 25,
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeviceShortInfoPagedResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeviceShortInfoPagedResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeviceShortInfoPagedResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "authorized-groups": 
+      }
+    },
+    "/v2/groups/ungrouped-devices": {
+      "get": {
+        "tags": [
+          "Groups"
+        ],
+        "summary": "Get paginated list of devices not belonging to any group and their info.",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number. Cannot be less than 1.",
+            "schema": {
+              "maximum": 2147483647,
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "Page size. Cannot be less than 1 or greater than 25.",
+            "schema": {
+              "maximum": 25,
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeviceShortInfoPagedResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeviceShortInfoPagedResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeviceShortInfoPagedResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "authorized-groups": 
+      }
+    },
+    "/v2/groups/{groupId}/points": {
+      "patch": {
+        "tags": [
+          "Groups"
+        ],
+        "summary": "Change settings on all devices in a group.",
+        "description": "Sample request - 1:\r\n            \r\n    PATCH /v2/groups/{groupId}/points\r\n    {\r\n      \"parameterId\" : \"value\",\r\n      \"smartHomeCategory\" : \"value\"\r\n    }\r\n\n\r\nWhere:\r\n* groupId - id of the specific group;\r\n* parameterId - id of the specific device parameter;\r\n* value - a new value for this parameter;\r\n* smartHomeCategory - smart home category of the device that needs to be updated.\r\n\n\r\nBoth parameter ID and smart home category can be used interchangeably in the request.",
+        "parameters": [
+          {
+            "name": "groupId",
+            "in": "path",
+            "description": "Group Id.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Data for updating data point. Consist of the dictionary of parameters with a new values.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              },
+              "example": {"54321":"30","sh-indoorSpHeat":"30","12346":"-10","sh-poolTemp":"18"}
+            },
+            "text/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              },
+              "example": {"54321":"30","sh-indoorSpHeat":"30","12346":"-10","sh-poolTemp":"18"}
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              },
+              "example": {"54321":"30","sh-indoorSpHeat":"30","12346":"-10","sh-poolTemp":"18"}
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": { }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": { }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": { }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "authorized-groups": 
+      }
+    },
+    "/oauth/token": {
+      "post": {
+        "tags": [
+          "Identity"
+        ],
+        "summary": "Token endpoint that can be used to programmatically request tokens using the granted authorization code.",
+        "description": "The request must contain the following body as x-www-form-urlencoded: \n\r\n\r\n    grant_type: \"authorization_code\"\r\n    client_id: according to the client\r\n    client_secret: according to the client\r\n    code: received in response after user's login\r\n    redirect_uri: valid url, must match callback url",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "authorized-groups": 
+      }
+    },
+    "/v2/devices/{deviceId}/notifications/active": {
+      "get": {
+        "tags": [
+          "Notifications"
+        ],
+        "summary": "Retrieve active alarms for specified device.",
+        "parameters": [
+          {
+            "name": "deviceId",
+            "in": "path",
+            "description": "ID of the device.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number. Optional, defaults to 1.",
+            "schema": {
+              "maximum": 2147483647,
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "itemsPerPage",
+            "in": "query",
+            "description": "Maximum number of results to be returned. Optional, defaults to 10.",
+            "schema": {
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language (e.g. en-GB).",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlarmPagedResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlarmPagedResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlarmPagedResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "422": {
+            "description": "Unprocessable Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "authorized-groups": 
+      }
+    },
+    "/v2/devices/notifications/active": {
+      "get": {
+        "tags": [
+          "Notifications"
+        ],
+        "summary": "Retrieve active alarms for specified device.",
+        "parameters": [
+          {
+            "name": "deviceIds",
+            "in": "query",
+            "description": "List of device IDs.",
+            "required": true,
+            "schema": {
+              "maxItems": 30,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "notificationIds",
+            "in": "query",
+            "description": "List of notification IDs.",
+            "schema": {
+              "maxItems": 30,
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language (e.g. en-GB).",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlarmPagedResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlarmPagedResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlarmPagedResult"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "authorized-groups": 
+      }
+    },
+    "/v2/devices/notifications/archived": {
+      "get": {
+        "tags": [
+          "Notifications"
+        ],
+        "summary": "Retrieve active alarms for specified device.",
+        "parameters": [
+          {
+            "name": "deviceIds",
+            "in": "query",
+            "description": "List of device IDs.",
+            "required": true,
+            "schema": {
+              "maxItems": 30,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "notificationIds",
+            "in": "query",
+            "description": "List of notification IDs.",
+            "required": true,
+            "schema": {
+              "maxItems": 30,
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language (e.g. en-GB).",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlarmPagedResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlarmPagedResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlarmPagedResult"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "authorized-groups": 
+      }
+    },
+    "/v2/devices/{deviceId}/notifications": {
+      "get": {
+        "tags": [
+          "Notifications"
+        ],
+        "summary": "Retrieve all (active and archived) alarms for specified device.",
+        "parameters": [
+          {
+            "name": "deviceId",
+            "in": "path",
+            "description": "ID of the device.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number. Optional, defaults to 1.",
+            "schema": {
+              "maximum": 2147483647,
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "itemsPerPage",
+            "in": "query",
+            "description": "Maximum number of results to be returned. Optional, defaults to 10.",
+            "schema": {
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language (e.g. en-GB).",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlarmPagedResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlarmPagedResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlarmPagedResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "422": {
+            "description": "Unprocessable Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "authorized-groups": 
+      }
+    },
+    "/v2/devices/{deviceId}/notifications/{notificationId}": {
+      "get": {
+        "tags": [
+          "Notifications"
+        ],
+        "summary": "Retrieve notification details by notification id.",
+        "parameters": [
+          {
+            "name": "deviceId",
+            "in": "path",
+            "description": "The id of the system.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "notificationId",
+            "in": "path",
+            "description": "The id of the notification(alarm).",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language (e.g. en-GB)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Alarm"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Alarm"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Alarm"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "422": {
+            "description": "Unprocessable Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "authorized-groups": 
+      }
+    },
+    "/v2/devices/{deviceId}/notifications/{notificationId}/reset": {
+      "post": {
+        "tags": [
+          "Notifications"
+        ],
+        "summary": "Reset notification for device.",
+        "parameters": [
+          {
+            "name": "deviceId",
+            "in": "path",
+            "description": "The id of the device.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "notificationId",
+            "in": "path",
+            "description": "The id of the notification(alarm).",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CloudToDeviceMethodResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CloudToDeviceMethodResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CloudToDeviceMethodResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "authorized-groups": 
+      }
+    },
+    "/v2/devices/notifications/{notificationId}/reset": {
+      "post": {
+        "tags": [
+          "Notifications"
+        ],
+        "summary": "Reset notification for multiple devices.",
+        "parameters": [
+          {
+            "name": "notificationId",
+            "in": "path",
+            "description": "The id of the notification(alarm).",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The id of the device.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "maxItems": 30,
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "maxItems": 30,
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "maxItems": 30,
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "207": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "$ref": "#/components/schemas/DeviceMethodResult"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "$ref": "#/components/schemas/DeviceMethodResult"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "$ref": "#/components/schemas/DeviceMethodResult"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "authorized-groups": 
+      }
+    },
+    "/v2/protected-ping": {
+      "get": {
+        "tags": [
+          "Ping"
+        ],
+        "summary": "Tests the API availability with authorization header.",
+        "responses": {
+          "204": {
+            "description": "If API is alive."
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "authorized-groups": 
+      }
+    },
+    "/v2/ping": {
+      "get": {
+        "tags": [
+          "Ping"
+        ],
+        "summary": "Tests the API availability.",
+        "responses": {
+          "204": {
+            "description": "If API is alive."
+          }
+        },
+        "authorized-groups": 
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AggregationMethod": {
+        "enum": [
+          "None",
+          "Max",
+          "Min",
+          "Sum",
+          "Average",
+          "Median",
+          "Diff"
+        ],
+        "type": "string"
+      },
+      "AggregationUnit": {
+        "enum": [
+          "None",
+          "Hours",
+          "Days",
+          "Weeks",
+          "Months",
+          "WeeksStartingOnSunday",
+          "Infinite"
+        ],
+        "type": "string"
+      },
+      "AidMode": {
+        "enum": [
+          "On",
+          "Off"
+        ],
+        "type": "string"
+      },
+      "AidModeResponseModel": {
+        "type": "object",
+        "properties": {
+          "aidMode": {
+            "$ref": "#/components/schemas/AidMode"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Alarm": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The id of the alarm stored in the database.",
+            "format": "uuid"
+          },
+          "alarmId": {
+            "type": "integer",
+            "description": "The company´s id of the alarm.",
+            "format": "int32"
+          },
+          "deviceId": {
+            "type": "string",
+            "description": "The device which the alarm belongs to.",
+            "nullable": true
+          },
+          "severity": {
+            "maximum": 100,
+            "minimum": 1,
+            "type": "integer",
+            "description": "Determines the severity of the alarm,\r\n1 being the most severe.",
+            "format": "int32"
+          },
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "createdDatetime": {
+            "type": "string",
+            "description": "Date of the creation.",
+            "nullable": true
+          },
+          "header": {
+            "type": "string",
+            "description": "Localized alarm title.",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "description": "Localized alarm description.",
+            "nullable": true
+          },
+          "equipName": {
+            "type": "string",
+            "description": "The name of the equipment.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Alarm."
+      },
+      "AlarmPagedResult": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Alarm"
+            },
+            "description": "Page.",
+            "nullable": true
+          },
+          "paginationInfo": {
+            "$ref": "#/components/schemas/PaginationInfo"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Paged result."
+      },
+      "BulkDevicePointsRequest": {
+        "type": "object",
+        "properties": {
+          "deviceIds": {
+            "maxItems": 10,
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "parameterIds": {
+            "maxItems": 10,
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "BulkZonePatchRequest": {
+        "type": "object",
+        "properties": {
+          "deviceIds": {
+            "maxItems": 30,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "settings": {
+            "$ref": "#/components/schemas/ZonePatchRequest"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CloudToDeviceMethodResult": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "integer",
+            "description": "Gets or sets the status of device method invocation.",
+            "format": "int32"
+          },
+          "payload": { }
+        },
+        "additionalProperties": false,
+        "description": "Represents the Device Method Invocation Results."
+      },
+      "DayOfWeek": {
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "DeviceCategory": {
+        "type": "object",
+        "properties": {
+          "categoryName": {
+            "type": "string",
+            "description": "Category name.",
+            "nullable": true
+          },
+          "parameters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ParameterDetail"
+            },
+            "description": "Parameters.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Equip model."
+      },
+      "DeviceConnectionState": {
+        "enum": [
+          "Disconnected",
+          "Connected"
+        ],
+        "type": "string",
+        "description": "Specifies the different connection states of a device.\r\n0 - Disconnected\r\n1 - Connected"
+      },
+      "DeviceFirmwareInfoResponse": {
+        "type": "object",
+        "properties": {
+          "deviceId": {
+            "type": "string",
+            "nullable": true
+          },
+          "firmwareId": {
+            "type": "string",
+            "nullable": true
+          },
+          "currentFwVersion": {
+            "type": "string",
+            "nullable": true
+          },
+          "desiredFwVersion": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DeviceMethodResult": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DeviceResponseModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Id.",
+            "nullable": true
+          },
+          "connectionState": {
+            "$ref": "#/components/schemas/DeviceConnectionState"
+          },
+          "firmware": {
+            "$ref": "#/components/schemas/FirmwareResponseModel"
+          },
+          "product": {
+            "$ref": "#/components/schemas/ProductResponseModel"
+          }
+        },
+        "additionalProperties": false,
+        "description": "DeviceResponseModel."
+      },
+      "DeviceSettingUpdateRequest": {
+        "type": "object",
+        "properties": {
+          "deviceIds": {
+            "maxItems": 30,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "deviceSettings": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DeviceShortInfo": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Device id.",
+            "nullable": true
+          },
+          "alias": {
+            "type": "string",
+            "description": "Device name.",
+            "nullable": true
+          },
+          "brandId": {
+            "type": "string",
+            "description": "Device brand.",
+            "nullable": true
+          },
+          "serialNumber": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DeviceShortInfoPagedResult": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DeviceShortInfo"
+            },
+            "description": "Page.",
+            "nullable": true
+          },
+          "paginationInfo": {
+            "$ref": "#/components/schemas/PaginationInfo"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Paged result."
+      },
+      "EnumValues": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "description": "The EnumValue of the Enum.",
+            "nullable": true
+          },
+          "text": {
+            "type": "string",
+            "description": "The EnumText of the Enum.",
+            "nullable": true
+          },
+          "icon": {
+            "type": "string",
+            "description": "The EnumIcon of the Enum.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "FirmwareResponseModel": {
+        "type": "object",
+        "properties": {
+          "currentFwVersion": {
+            "type": "string",
+            "description": "Current Firmware Version",
+            "nullable": true
+          },
+          "desiredFwVersion": {
+            "type": "string",
+            "description": "Desired Firmware Version",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Firmware response model"
+      },
+      "HistoryPointsRequest": {
+        "required": [
+          "aggregationMethod",
+          "aggregationUnit",
+          "dateFrom",
+          "dateTo",
+          "deviceIds",
+          "parameterIds"
+        ],
+        "type": "object",
+        "properties": {
+          "parameterIds": {
+            "maxItems": 10,
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "deviceIds": {
+            "maxItems": 10,
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "dateFrom": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "dateTo": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "aggregationMethod": {
+            "$ref": "#/components/schemas/AggregationMethod"
+          },
+          "aggregationUnit": {
+            "$ref": "#/components/schemas/AggregationUnit"
+          },
+          "includeOuterBounds": {
+            "type": "boolean"
+          },
+          "unitSystem": {
+            "$ref": "#/components/schemas/UnitSystem"
+          }
+        },
+        "additionalProperties": false
+      },
+      "HistoryPointsResponse": {
+        "type": "object",
+        "properties": {
+          "response": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ScaledDataPointVm"
+                }
+              }
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ModeSetResult": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/OperationStatus"
+          },
+          "description": {
+            "type": "string",
+            "description": "Optional text description of an error.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ModeSetting": {
+        "type": "object",
+        "properties": {
+          "settingId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "value": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "OperationStatus": {
+        "enum": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "PaginationInfo": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "resultCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ParameterData": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "string",
+            "description": "Category.",
+            "nullable": true,
+            "readOnly": true
+          },
+          "parameterId": {
+            "type": "string",
+            "description": "Parameter id.",
+            "nullable": true,
+            "readOnly": true
+          },
+          "parameterName": {
+            "type": "string",
+            "description": "Parameter name.",
+            "nullable": true,
+            "readOnly": true
+          },
+          "parameterUnit": {
+            "type": "string",
+            "description": "Parameter unit.",
+            "nullable": true,
+            "readOnly": true
+          },
+          "writable": {
+            "type": "boolean",
+            "description": "Defines if parameter could be changed.",
+            "readOnly": true
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "Timestamp property.",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "value": {
+            "description": "Value property.",
+            "nullable": true,
+            "readOnly": true
+          },
+          "strVal": {
+            "type": "string",
+            "description": "String value property.",
+            "nullable": true,
+            "readOnly": true
+          },
+          "smartHomeCategories": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Parameter Smart home categories.",
+            "nullable": true,
+            "readOnly": true
+          },
+          "minValue": {
+            "type": "number",
+            "description": "Parameter min value.",
+            "format": "double",
+            "nullable": true,
+            "readOnly": true
+          },
+          "maxValue": {
+            "type": "number",
+            "description": "Parameter max value.",
+            "format": "double",
+            "nullable": true,
+            "readOnly": true
+          },
+          "stepValue": {
+            "type": "number",
+            "description": "Parameter step value, specifies the allowed stepping between valid values\r\nwhen the value is numeric.",
+            "format": "double",
+            "nullable": true,
+            "readOnly": true
+          },
+          "enumValues": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EnumValues"
+            },
+            "description": "Parameter enum values.",
+            "nullable": true,
+            "readOnly": true
+          },
+          "scaleValue": {
+            "type": "string",
+            "description": "Parameter scale value.",
+            "nullable": true,
+            "readOnly": true
+          },
+          "zoneId": {
+            "type": "string",
+            "description": "Reference to a ShZone entity.",
+            "nullable": true,
+            "readOnly": true
+          },
+          "deviceId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Grouped parameter value."
+      },
+      "ParameterDetail": {
+        "type": "object",
+        "properties": {
+          "parameterId": {
+            "type": "string",
+            "description": "Parameter id.",
+            "nullable": true,
+            "readOnly": true
+          },
+          "parameterName": {
+            "type": "string",
+            "description": "Parameter name.",
+            "nullable": true,
+            "readOnly": true
+          },
+          "parameterUnit": {
+            "type": "string",
+            "description": "Parameter unit.",
+            "nullable": true
+          },
+          "smartHomeCategories": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Parameter Smart home categories.",
+            "nullable": true
+          },
+          "minValue": {
+            "type": "integer",
+            "description": "Parameter min value.",
+            "format": "int32",
+            "nullable": true
+          },
+          "maxValue": {
+            "type": "integer",
+            "description": "Parameter max value.",
+            "format": "int32",
+            "nullable": true
+          },
+          "stepValue": {
+            "type": "integer",
+            "description": "Parameter step value, specifies the allowed stepping between valid values\r\nwhen the value is numeric.",
+            "format": "int32",
+            "nullable": true
+          },
+          "enumValues": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EnumValues"
+            },
+            "description": "Parameter enum values.",
+            "nullable": true
+          },
+          "scaleValue": {
+            "type": "string",
+            "description": "Parameter scale value.",
+            "nullable": true
+          },
+          "zoneId": {
+            "type": "string",
+            "description": "Reference to a ShZone entity.",
+            "nullable": true
+          },
+          "writable": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Equip group model."
+      },
+      "ProductResponseModel": {
+        "type": "object",
+        "properties": {
+          "serialNumber": {
+            "type": "string",
+            "description": "SerialNumber",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "description": "Name",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "ProductResponseModel"
+      },
+      "SPGroupsTreeResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Group Identitfier.",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "description": "Group Name.",
+            "nullable": true
+          },
+          "childGroups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SPGroupsTreeResponse"
+            },
+            "description": "List of Child groups.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ScaledDataPointVm": {
+        "type": "object",
+        "properties": {
+          "decimals": {
+            "type": "string",
+            "description": "Number of decimals to be displayed for the amount.",
+            "nullable": true
+          },
+          "parameterId": {
+            "type": "string",
+            "description": "The id of the device variable.",
+            "nullable": true
+          },
+          "value": {
+            "description": "Value property.",
+            "nullable": true
+          },
+          "unit": {
+            "type": "string",
+            "description": "Unit of measurement.",
+            "nullable": true
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "Timestamp property.",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Represents the view model class for scaled data points.\r\nIs used to return data via API only for historical data endpoints."
+      },
+      "ScheduleMode": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "modeId": {
+            "type": "integer",
+            "description": "Mode identifier.\r\nSet null, to create a new mode.\r\n\"mode\" property internally.",
+            "format": "int32",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of mode (user-configurable).",
+            "nullable": true
+          },
+          "settings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ModeSetting"
+            },
+            "description": "List of settings for this mode.\r\nCan be a subset of available settings if forceAllModeSettings are false.",
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean",
+            "description": "Defines if mode used in weekly or vacation schedule."
+          }
+        },
+        "additionalProperties": false
+      },
+      "SmartHomeModeModel": {
+        "type": "object",
+        "properties": {
+          "smartMode": {
+            "$ref": "#/components/schemas/SmartMode"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SmartMode": {
+        "enum": [
+          "Default",
+          "Normal",
+          "Away",
+          "Vacation"
+        ],
+        "type": "string",
+        "description": "Smart mode enum."
+      },
+      "Status": {
+        "enum": [
+          "None",
+          "Active",
+          "DismissedByDevice",
+          "ResetByUserOnDevice",
+          "ResetByUserFromCloud",
+          "Unknown"
+        ],
+        "type": "string"
+      },
+      "UnitSystem": {
+        "enum": [
+          "Metric",
+          "Imperial",
+          "DefaultFromDevice"
+        ],
+        "type": "string",
+        "description": "Represents category of the units of measurement."
+      },
+      "WeekFormatType": {
+        "enum": [
+          "EachDaySeparate",
+          "MondayToFridaySaturdaySunday",
+          "MondayToFridaySaturdayToSunday",
+          "MondayToSunday"
+        ],
+        "type": "string",
+        "description": "Week format type."
+      },
+      "WeeklyEvent": {
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "type": "boolean",
+            "description": "If set to false the event is disabled in product. Optional, defaults to true."
+          },
+          "modeId": {
+            "type": "integer",
+            "description": "Mode to use, as defined in getScheduleModes.",
+            "format": "int32"
+          },
+          "startDay": {
+            "$ref": "#/components/schemas/DayOfWeek"
+          },
+          "startTime": {
+            "type": "string",
+            "description": "Start time, number of seconds since midnight (0-86400).",
+            "format": "date-span"
+          },
+          "stopDay": {
+            "$ref": "#/components/schemas/DayOfWeek"
+          },
+          "stopTime": {
+            "type": "string",
+            "description": "Stop time, number of seconds since midnight (0-86400).",
+            "format": "date-span",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Part of a weekly program of a device."
+      },
+      "WeeklyEventVerbose": {
+        "type": "object",
+        "properties": {
+          "mode": {
+            "$ref": "#/components/schemas/ScheduleMode"
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "If set to false the event is disabled in product. Optional, defaults to true."
+          },
+          "modeId": {
+            "type": "integer",
+            "description": "Mode to use, as defined in getScheduleModes.",
+            "format": "int32"
+          },
+          "startDay": {
+            "$ref": "#/components/schemas/DayOfWeek"
+          },
+          "startTime": {
+            "type": "string",
+            "description": "Start time, number of seconds since midnight (0-86400).",
+            "format": "date-span"
+          },
+          "stopDay": {
+            "$ref": "#/components/schemas/DayOfWeek"
+          },
+          "stopTime": {
+            "type": "string",
+            "description": "Stop time, number of seconds since midnight (0-86400).",
+            "format": "date-span",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WeeklySchedule": {
+        "type": "object",
+        "properties": {
+          "weeklyScheduleId": {
+            "maximum": 10,
+            "minimum": 0,
+            "type": "integer",
+            "description": "Id of this weekly program.\r\nValid values are [0, numWeekly-1] where numWeekly is specified in the schedule config.",
+            "format": "int32"
+          },
+          "weekFormat": {
+            "$ref": "#/components/schemas/WeekFormatType"
+          },
+          "events": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WeeklyEvent"
+            },
+            "description": "List of all current events for this weekly program.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Represents currently programmed weekly schedule."
+      },
+      "WeeklyScheduleForDevices": {
+        "type": "object",
+        "properties": {
+          "deviceIds": {
+            "maxItems": 30,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "weeklySchedules": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WeeklySchedule"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WeeklyScheduleVerboseResponse": {
+        "type": "object",
+        "properties": {
+          "weeklyScheduleId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "weekFormat": {
+            "$ref": "#/components/schemas/WeekFormatType"
+          },
+          "events": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WeeklyEventVerbose"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ZonePatchRequest": {
+        "type": "object",
+        "properties": {
+          "setpointHeat": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "setpointCool": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "mode": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ZoneResponse": {
+        "type": "object",
+        "properties": {
+          "zoneId": {
+            "type": "string",
+            "description": "Zone's Identifier.",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "description": "Zone's name.",
+            "nullable": true
+          },
+          "commandOnly": {
+            "type": "boolean",
+            "description": "If true, zone is command-only and no temperature readings\r\nare available. Setpoint will be an unspecified value\r\n(not degrees)."
+          },
+          "supportedModes": {
+            "type": "string",
+            "description": "Comma separated string with Zone's supported modes.\r\nExample - \"heat,cool,auto,off\".",
+            "nullable": true
+          },
+          "mode": {
+            "type": "string",
+            "description": "Zone's current mode.",
+            "nullable": true
+          },
+          "temperature": {
+            "type": "number",
+            "description": "Current temperature in target unit.",
+            "format": "double",
+            "nullable": true
+          },
+          "setpoint": {
+            "type": "number",
+            "description": "Target temperature in target unit.",
+            "format": "double",
+            "nullable": true
+          },
+          "setpointHeat": {
+            "type": "number",
+            "description": "Heating setpoint current value.",
+            "format": "double",
+            "nullable": true
+          },
+          "setpointCool": {
+            "type": "number",
+            "description": "Cooling setpoint current value.",
+            "format": "double",
+            "nullable": true
+          },
+          "setpointRangeMin": {
+            "type": "integer",
+            "description": "Minimum temperature range.",
+            "format": "int32",
+            "nullable": true
+          },
+          "setpointRangeMax": {
+            "type": "integer",
+            "description": "Maximum temperature range.",
+            "format": "int32",
+            "nullable": true
+          },
+          "isCelsius": {
+            "type": "boolean",
+            "description": "Specified temperature unit for the zone.\r\nIf \"isCelsius\" is false then all temperatures are in Fahrenheit. Otherwise it is in Celsius."
+          },
+          "indoorCo2": {
+            "type": "integer",
+            "description": "Indoor CO2 levels (0-40000ppm)",
+            "format": "int32",
+            "nullable": true
+          },
+          "indoorHumidity": {
+            "type": "number",
+            "description": "Indoor humidity (0-100%RH)",
+            "format": "double",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "securitySchemes": {
+      "Bearer Token Authorization": {
+        "type": "http",
+        "description": "Enter your JWT token, which starts with 'ey', to authorize.",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "Bearer Token Authorization": [ ]
+    }
+  ]
+}
