@@ -242,7 +242,7 @@ export class MyUplinkApiFetcher extends EventEmitter implements DataFetcher {
 
   private async processAlarmReset(systemId: string, notifications: api.Alarm[]): Promise<void> {
     for (const notification of notifications) {
-      if (!MyUplinkApiFetcher.shouldAttemptAlarmReset(notification, this.alarmResetState)) {
+      if (!this.shouldAttemptAlarmResetWithLog(notification, this.alarmResetState)) {
         continue;
       }
 
@@ -301,8 +301,44 @@ export class MyUplinkApiFetcher extends EventEmitter implements DataFetcher {
     }
   }
 
+  private shouldAttemptAlarmResetWithLog(
+    notification: Pick<api.Alarm, 'id' | 'alarmNumber' | 'status' | 'deviceId'> | null | undefined,
+    state: Map<string, { alarmNumber: number; attempts: number; lastAttemptTime: number }>,
+  ): boolean {
+    const ok = MyUplinkApiFetcher.shouldAttemptAlarmReset(notification, state);
+    if (ok) {
+      return true;
+    }
+
+    const id = notification?.id ?? '<missing>';
+    if (notification == null || notification.id == null || notification.id === '') {
+      this.log.debug(`Skipping reset for notification ${id}: missing id or notification is null`);
+      return false;
+    }
+
+    if (notification.status !== 'Active' || notification.alarmNumber !== 229) {
+      this.log.debug(`Skipping reset for notification ${id}: status=${notification.status} alarmNumber=${notification.alarmNumber}`);
+      return false;
+    }
+
+    const current = state.get(notification.id) ?? { alarmNumber: notification.alarmNumber, attempts: 0, lastAttemptTime: 0 };
+    if (current.attempts >= consts.maxAlarmResetAttempts) {
+      this.log.debug(`Skipping reset for notification ${id}: attempts=${current.attempts} >= max=${consts.maxAlarmResetAttempts}`);
+      return false;
+    }
+
+    if (current.lastAttemptTime > 0 && Date.now() - current.lastAttemptTime < consts.alarmResetCooldownMs) {
+      this.log.debug(`Skipping reset for notification ${id}: cooldown active (${Date.now() - current.lastAttemptTime}ms < ${consts.alarmResetCooldownMs}ms)`);
+      return false;
+    }
+
+    this.log.debug(`Skipping reset for notification ${id}: unknown reason`);
+    return false;
+  }
+
   public async resetNotification(systemId: string, deviceId: string, notificationId: string): Promise<api.CloudToDeviceMethodResult> {
     const deviceUrl = `/v2/devices/${deviceId}/notifications/${notificationId}/reset`;
+    this.log.debug(`Attempting device-level reset: ${deviceUrl}`);
     try {
       return await this.postToMyUplink<api.CloudToDeviceMethodResult>(deviceUrl, {});
     } catch (error) {
@@ -312,9 +348,11 @@ export class MyUplinkApiFetcher extends EventEmitter implements DataFetcher {
       );
       if (isNotFound) {
         const systemUrl = `/v2/systems/${systemId}/notifications/${notificationId}/reset`;
-        this.log.debug(`Device-level reset returned 404, retrying system-level reset: ${systemUrl}`);
+        this.log.info(`Device-level reset returned 404, retrying system-level reset: ${systemUrl}`);
+        this.log.debug(`Retrying system-level reset: ${systemUrl}`);
         return await this.postToMyUplink<api.CloudToDeviceMethodResult>(systemUrl, {});
       }
+      this.log.error(`Reset notification failed for ${notificationId}: ${msg}`);
       throw error;
     }
   }
@@ -434,12 +472,14 @@ export class MyUplinkApiFetcher extends EventEmitter implements DataFetcher {
         if (axiosError.response.status === 401) {
           this.clearSession();
         }
-        if (axiosError.response.data != null) {
-          const responseText = JSON.stringify(axiosError.response.data, null, ' ');
-          const errorMessage = `${axiosError.response.statusText}: ${responseText}`;
+        const respData = axiosError.response.data != null ? JSON.stringify(axiosError.response.data, null, ' ') : null;
+        const statusText = axiosError.response.statusText || String(axiosError.response.status);
+        if (respData) {
+          this.log.debug(`Response data from ${url}: ${respData}`);
+          const errorMessage = `${statusText}: ${respData}`;
           return new Error(errorMessage);
         } else {
-          return new Error(axiosError.response.statusText);
+          return new Error(statusText);
         }
       }
     }
