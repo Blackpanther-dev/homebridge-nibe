@@ -302,8 +302,21 @@ export class MyUplinkApiFetcher extends EventEmitter implements DataFetcher {
   }
 
   public async resetNotification(systemId: string, deviceId: string, notificationId: string): Promise<api.CloudToDeviceMethodResult> {
-    const url = `/v2/devices/${deviceId}/notifications/${notificationId}/reset`;
-    return await this.postToMyUplink<api.CloudToDeviceMethodResult>(url, {});
+    const deviceUrl = `/v2/devices/${deviceId}/notifications/${notificationId}/reset`;
+    try {
+      return await this.postToMyUplink<api.CloudToDeviceMethodResult>(deviceUrl, {});
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : String(error);
+      const isNotFound = msg.includes('Not Found') || (
+        error && typeof error === 'object' && (error as any).response && (error as any).response.status === 404
+      );
+      if (isNotFound) {
+        const systemUrl = `/v2/systems/${systemId}/notifications/${notificationId}/reset`;
+        this.log.debug(`Device-level reset returned 404, retrying system-level reset: ${systemUrl}`);
+        return await this.postToMyUplink<api.CloudToDeviceMethodResult>(systemUrl, {});
+      }
+      throw error;
+    }
   }
 
   private async postToMyUplink<T>(url: string, body: object = {}, headers: object = {}): Promise<T> {
