@@ -19,11 +19,32 @@ jobs:
           node-version: 20
           cache: npm
 
+      - name: Show Node.js and npm versions
+        run: |
+          echo "Node.js:"
+          node --version
+          echo "npm:"
+          npm --version
+
       - name: Install dependencies
         run: npm ci
 
-      - name: Test and package
+      - name: Build
+        run: npm run build
+
+      - name: Test
+        run: npm test
+
+      - name: Package
         run: npm pack
+
+      - name: Show package contents
+        run: |
+          echo "Generated package:"
+          ls -lh *.tgz
+          echo
+          echo "Package contents:"
+          tar -tzf *.tgz
 
       - name: Upload package
         uses: actions/upload-artifact@v4
