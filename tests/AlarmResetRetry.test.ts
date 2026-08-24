@@ -46,6 +46,6 @@ describe('MyUplinkApiFetcher reset retry behavior', () => {
     const secondCall = mockedAxios.post.mock.calls[1][0];
 
     expect(firstCall).toBe(`/v2/devices/${deviceId}/notifications/${notificationId}/reset`);
-    expect(secondCall).toBe(`/v2/systems/${systemId}/notifications/${notificationId}/reset`);
+    expect(secondCall).toBe(`/v2/devices/notifications/${notificationId}/reset`);
   });
 });
