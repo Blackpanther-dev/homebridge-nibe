@@ -347,10 +347,10 @@ export class MyUplinkApiFetcher extends EventEmitter implements DataFetcher {
         error && typeof error === 'object' && (error as any).response && (error as any).response.status === 404
       );
       if (isNotFound) {
-        const systemUrl = `/v2/systems/${systemId}/notifications/${notificationId}/reset`;
-        this.log.info(`Device-level reset returned 404, retrying system-level reset: ${systemUrl}`);
-        this.log.debug(`Retrying system-level reset: ${systemUrl}`);
-        return await this.postToMyUplink<api.CloudToDeviceMethodResult>(systemUrl, {});
+        const multiDeviceUrl = `/v2/devices/notifications/${notificationId}/reset`;
+        this.log.info(`Device-level reset returned 404, retrying multidevice reset: ${multiDeviceUrl}`);
+        this.log.debug(`Retrying system-level reset: ${multiDeviceUrl}`);
+        return await this.postToMyUplink<api.CloudToDeviceMethodResult>(multiDeviceUrl, {});
       }
       this.log.error(`Reset notification failed for ${notificationId}: ${msg}`);
       throw error;
