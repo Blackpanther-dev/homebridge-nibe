@@ -339,12 +339,12 @@ export class MyUplinkApiFetcher extends EventEmitter implements DataFetcher {
   public async resetNotification(
     systemId: string,
     deviceId: string,
-    notificationId: number,
+    alarmNumber: number,
   ): Promise<api.CloudToDeviceMethodResult> {
     // The myUplink reset endpoint expects an integer notificationId.
     // The active notification payload used by this plugin exposes the integer
     // alarmNumber. notification.id is a UUID and must not be used here.
-    const deviceUrl = `/v2/devices/${deviceId}/notifications/${notificationId}/reset`;
+    const deviceUrl = `/v2/devices/${deviceId}/notifications/${alarmNumber}/reset`;
 
     this.log.debug(`Attempting device-level reset: ${deviceUrl}`);
 
@@ -362,7 +362,7 @@ export class MyUplinkApiFetcher extends EventEmitter implements DataFetcher {
 
         this.log.error(
           `Reset notification failed: HTTP ${response?.status ?? 'unknown'} ` +
-          `for device=${deviceId}, notificationId=${notificationId}`,
+          `for device=${deviceId}, alarmNumber=${alarmNumber}`,
         );
 
         if (response?.data !== undefined) {
