@@ -5,10 +5,10 @@ jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 describe('MyUplinkApiFetcher reset retry behavior', () => {
-  test('retries system-level reset when device-level reset returns 404', async () => {
+  test('retries multi device reset when device-level reset returns 404', async () => {
     const systemId = 'system-1';
     const deviceId = 'device-1';
-    const notificationId = 'notif-1';
+    const alarmNumber = 123;
 
     // first call: device-level reset -> 404
     const axios404 = {
@@ -36,7 +36,7 @@ describe('MyUplinkApiFetcher reset retry behavior', () => {
 
     const fetcher = new MyUplinkApiFetcher(options, log);
 
-    const result = await fetcher.resetNotification(systemId, deviceId, notificationId);
+    const result = await fetcher.resetNotification(systemId, deviceId, alarmNumber);
 
     expect(result).toEqual(success.data);
 
@@ -45,7 +45,7 @@ describe('MyUplinkApiFetcher reset retry behavior', () => {
     const firstCall = mockedAxios.post.mock.calls[0][0];
     const secondCall = mockedAxios.post.mock.calls[1][0];
 
-    expect(firstCall).toBe(`/v2/devices/${deviceId}/notifications/${notificationId}/reset`);
-    expect(secondCall).toBe(`/v2/devices/notifications/${notificationId}/reset`);
+    expect(firstCall).toBe(`/v2/devices/${deviceId}/notifications/${alarmNumber}/reset`);
+    expect(secondCall).toBe(`/v2/devices/notifications/${alarmNumber}/reset`);
   });
 });
