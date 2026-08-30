@@ -343,6 +343,36 @@ export class MyUplinkApiFetcher extends EventEmitter implements DataFetcher {
       return await this.postToMyUplink<api.CloudToDeviceMethodResult>(deviceUrl, {});
     } catch (error) {
       const msg = error instanceof Error ? error.message : String(error);
+
+      // If the API returned a structured error body, log all available fields for debugging.
+      if (axios.isAxiosError(error) && (error as any).response && (error as any).response.data) {
+        const resp = (error as any).response;
+        const body = resp.data;
+        try {
+          this.log.error(`Reset notification error response for ${notificationId}: ${JSON.stringify(body, null, 2)}`);
+        } catch (e) {
+          this.log.error(`Reset notification error response for ${notificationId}: <unserializable>`);
+        }
+
+        const httpStatusCode = body?.httpStatusCode ?? resp.status;
+        const errorCode = body?.errorCode ?? '';
+        const timestamp = body?.timestamp ?? '';
+        const details = Array.isArray(body?.details) ? body.details : [];
+        const dataObj = body?.data ?? {};
+
+        this.log.error(`HTTP status: ${httpStatusCode}, errorCode: ${errorCode}, timestamp: ${timestamp}`);
+
+        if (details.length > 0) {
+          details.forEach((d: any, i: number) => this.log.error(`detail[${i}]: ${d}`));
+        }
+
+        if (dataObj && typeof dataObj === 'object' && Object.keys(dataObj).length > 0) {
+          for (const k of Object.keys(dataObj)) {
+            this.log.error(`data.${k}: ${String((dataObj as any)[k])}`);
+          }
+        }
+      }
+
       const isNotFound = msg.includes('Not Found') || (
         error && typeof error === 'object' && (error as any).response && (error as any).response.status === 404
       );
