@@ -261,7 +261,7 @@ export class MyUplinkApiFetcher extends EventEmitter implements DataFetcher {
 
       try {
         this.log.info('Attempting automatic reset of Nibe alarm 229.');
-        await this.resetNotification(systemId, notification.deviceId, notification.id);
+        await this.resetNotification(systemId, notification.deviceId, notification.alarmNumber);
         this.log.info('Nibe alarm 229 reset request succeeded.');
 
         const refreshed = await this.getFromMyUplink<api.AlarmsPaged>(
@@ -336,53 +336,49 @@ export class MyUplinkApiFetcher extends EventEmitter implements DataFetcher {
     return false;
   }
 
-  public async resetNotification(systemId: string, deviceId: string, notificationId: string): Promise<api.CloudToDeviceMethodResult> {
+  public async resetNotification(
+    systemId: string,
+    deviceId: string,
+    notificationId: number,
+  ): Promise<api.CloudToDeviceMethodResult> {
+    // The myUplink reset endpoint expects an integer notificationId.
+    // The active notification payload used by this plugin exposes the integer
+    // alarmNumber. notification.id is a UUID and must not be used here.
     const deviceUrl = `/v2/devices/${deviceId}/notifications/${notificationId}/reset`;
+
     this.log.debug(`Attempting device-level reset: ${deviceUrl}`);
+
     try {
-      return await this.postToMyUplink<api.CloudToDeviceMethodResult>(deviceUrl, {});
+      const result = await this.postToMyUplink<api.CloudToDeviceMethodResult>(
+        deviceUrl,
+        {},
+      );
+
+      this.log.info(`Nibe alarm reset API response: ${JSON.stringify(result)}`);
+      return result;
     } catch (error) {
-      const msg = error instanceof Error ? error.message : String(error);
+      if (axios.isAxiosError(error)) {
+        const response = error.response;
 
-      // If the API returned a structured error body, log all available fields for debugging.
-      if (axios.isAxiosError(error) && (error as any).response && (error as any).response.data) {
-        const resp = (error as any).response;
-        const body = resp.data;
-        try {
-          this.log.error(`Reset notification error response for ${notificationId}: ${JSON.stringify(body, null, 2)}`);
-        } catch (e) {
-          this.log.error(`Reset notification error response for ${notificationId}: <unserializable>`);
-        }
+        this.log.error(
+          `Reset notification failed: HTTP ${response?.status ?? 'unknown'} ` +
+          `for device=${deviceId}, notificationId=${notificationId}`,
+        );
 
-        const httpStatusCode = body?.httpStatusCode ?? resp.status;
-        const errorCode = body?.errorCode ?? '';
-        const timestamp = body?.timestamp ?? '';
-        const details = Array.isArray(body?.details) ? body.details : [];
-        const dataObj = body?.data ?? {};
-
-        this.log.error(`HTTP status: ${httpStatusCode}, errorCode: ${errorCode}, timestamp: ${timestamp}`);
-
-        if (details.length > 0) {
-          details.forEach((d: any, i: number) => this.log.error(`detail[${i}]: ${d}`));
-        }
-
-        if (dataObj && typeof dataObj === 'object' && Object.keys(dataObj).length > 0) {
-          for (const k of Object.keys(dataObj)) {
-            this.log.error(`data.${k}: ${String((dataObj as any)[k])}`);
+        if (response?.data !== undefined) {
+          try {
+            this.log.error(
+              `Reset API error response: ${JSON.stringify(response.data, null, 2)}`,
+            );
+          } catch {
+            this.log.error('Reset API error response could not be serialized.');
           }
         }
+      } else {
+        const message = error instanceof Error ? error.message : String(error);
+        this.log.error(`Reset notification failed: ${message}`);
       }
 
-      const isNotFound = msg.includes('Not Found') || (
-        error && typeof error === 'object' && (error as any).response && (error as any).response.status === 404
-      );
-      if (isNotFound) {
-        const multiDeviceUrl = `/v2/devices/notifications/${notificationId}/reset`;
-        this.log.info(`Device-level reset returned 404, retrying multidevice reset: ${multiDeviceUrl}`);
-        this.log.debug(`Retrying system-level reset: ${multiDeviceUrl}`);
-        return await this.postToMyUplink<api.CloudToDeviceMethodResult>(multiDeviceUrl, {});
-      }
-      this.log.error(`Reset notification failed for ${notificationId}: ${msg}`);
       throw error;
     }
   }
